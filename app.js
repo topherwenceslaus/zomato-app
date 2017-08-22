@@ -18,8 +18,10 @@ restService.get('/', function (req, res) {
 });
 
 restService.post('/location', function (req, res) {
-  var location = req.body.result && req.body.result.parameters &&
-  req.body.result.parameters.location ? req.body.result.parameters.location : 'Bangalore';
+  // var location = req.body.result && req.body.result.parameters &&
+  // req.body.result.parameters.location ? req.body.result.parameters.location : 'Bangalore';
+
+  var location = req.body.location || 'bellandur';     
 
   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}`)
         .then(function (response) {
@@ -36,9 +38,39 @@ restService.post('/location', function (req, res) {
           });
           
           res.json({
-            speech: postbackRespone,
-            displayText: postbackRespone,
-            source: location
+            "speech": "",
+            "messages": [
+              {
+                "type": 4,
+                "platform": "facebook",
+                "payload": {
+                  "facebook": {
+                    "attachment": {
+                      "type": "template",
+                      "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                          {
+                            "title": "Smurfs: The Lost Village (2017)",
+                            "image_url": "https://www.moovrika.com/ext/makeimg.php?tbl=movies&id=15666&img=1&type=image&movie=Smurfs+The+Lost+Village&fs=400",
+                            "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does.",
+                            "default_action": {
+                              "type": "web_url",
+                              "url": "https://www.moovrika.com/m/15666",
+                              "webview_height_ratio": "tall"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": 0,
+                "speech": ""
+              }
+            ]
           });
 
         })
