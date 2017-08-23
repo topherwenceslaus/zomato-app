@@ -18,10 +18,9 @@ restService.get('/', function (req, res) {
 });
 
 restService.post('/location', function (req, res) {
-  // var location = req.body.result && req.body.result.parameters &&
-  // req.body.result.parameters.location ? req.body.result.parameters.location : 'Bangalore';
+  var location = req.body.result && req.body.result.parameters &&
+  req.body.result.parameters.location ? req.body.result.parameters.location : 'Bangalore';
 
-  var location = req.body.location || 'bellandur';     
 
   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}`)
         .then(function (response) {
